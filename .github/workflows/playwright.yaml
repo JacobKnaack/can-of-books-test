@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 16.x, 18.x]
+        node-version: [16.x, 18.x]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -21,7 +21,7 @@ jobs:
         run: npx playwright install --with-deps
       - name: Set environment variables
         run: |
-          URL=https://my-favortite-books.netlify.app/
+          URL=https://my-favortite-books.netlify.app
           echo "REACT_APP_TEST_URL=$URL" >> $GITHUB_ENV
       - name: Run tests
         run: npx playwright test
