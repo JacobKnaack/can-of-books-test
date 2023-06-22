@@ -1,0 +1,34 @@
+require('dotenv').config();
+const { test, expect } = require('@playwright/test');
+const REACT_APP_URL = process.env.REACT_APP_TEST_URL || 'http://localhost:3000';
+
+test.describe('As a user, I\'d like to see the list of books, so that I can see what\'s recommended to me.', () => {
+
+  test('When the server does return some books, use a Bootstrap carousel to render all the books returned.', async ({ page }) => {
+    await page.goto(REACT_APP_URL);
+
+    let bookItems = await page.locator(`.carousel-item`).all();
+
+    expect(bookItems.length > 1).toBeTruthy();
+  });
+
+  test('Use React Router to add ability for user to navigate between Home and About "pages"', async ({ page }) => {
+    await page.goto(REACT_APP_URL);
+
+    let regex = /about/i;
+    const anchor = await page.getByRole('link', { name: regex });
+
+    expect(anchor).toBeTruthy();
+    await expect(anchor).toBeVisible();
+  });
+
+  test('Update the About page at path /about so that it displays the project developer\'s information, including a link to GitHub.', async ({ page }) => {
+    await page.goto(REACT_APP_URL + '/about');
+
+    let regex = /Github/ig;
+    let content = await page.getByText(regex);
+
+    expect(content).toBeTruthy();
+    await expect(content).toBeVisible();
+  });
+});
