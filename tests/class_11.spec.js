@@ -18,7 +18,6 @@ test.describe('As a user, I\'d like to see the list of books, so that I can see 
     let regex = /about/i;
     const anchor = await page.getByRole('link', { name: regex });
 
-    expect(anchor).toBeTruthy();
     await expect(anchor).toBeVisible();
   });
 
@@ -28,7 +27,6 @@ test.describe('As a user, I\'d like to see the list of books, so that I can see 
     let regex = /Github/ig;
     let content = await page.getByText(regex);
 
-    expect(content).toBeTruthy();
     await expect(content).toBeVisible();
   });
 });
