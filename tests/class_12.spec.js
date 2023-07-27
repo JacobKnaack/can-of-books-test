@@ -14,7 +14,7 @@ test.describe('Create: As a user, I\'d like to add a new book to the shelf, so t
   });
 
   test('When the form is submitted, use Axios to send a POST request to the server\'s /books endpoint, including the data from the form.  The server should respond with the new book that was successfully saved, which you should pass up to the BestBooks component, save to state, to allow React to re-render the list of all books.', async ({ page }) => {
-    let tag = Math.floor(Math.random() * 1000).toString().substring(2, 4);
+    let tag = Math.floor(Math.random() * 1000);
     let title = `Test Title - ${tag}`;
     let description = `Test Description - ${tag}`;
 
@@ -55,8 +55,7 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
     let btnEls = await page.locator(`.btn-danger`).all();
     await btnEls[btnEls.length - 1].click();
 
-    await page.waitForLoadState('domcontentloaded');
-    carouselList = await page.locator(`.carousel-item`).all();
+    carouselList = await page.locator(`.carousel-item`).all({ timeout: 3000 });
     expect(carouselList.length).toEqual(initialLength - 1);
   });
 
