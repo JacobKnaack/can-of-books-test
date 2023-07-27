@@ -47,14 +47,17 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
   test('When the user clicks the delete button, send a DELETE request to /books/:id, replacing :id with the id of that book.', async ({ page }) => {
     page.on('dialog', dialog => dialog.accept()); // accept prompt pop-up.
     await page.goto(REACT_APP_URL);
-    await page.waitForLoadState('networkidle');
-
+    let carousel = page.locator('.carousel');
+    
+    await carousel.waitFor('visible');
     let carouselList = await page.locator(`.carousel-item`).all();
     let initialLength = carouselList.length;
     
     let btnEls = await page.locator(`.btn-danger`).all();
     await btnEls[btnEls.length - 1].click();
+    await page.locator(`.carousel-control-next-icon`).click();
 
+    await carousel.waitFor('visible');
     carouselList = await page.locator(`.carousel-item`).all();
     expect(carouselList.length).toEqual(initialLength - 1);
   });
