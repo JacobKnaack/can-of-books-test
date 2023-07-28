@@ -21,8 +21,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:e2e": "npx playwright test",
+    "test": "npx playwright test",
+    "test:debug": "npx playwright test --debug",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

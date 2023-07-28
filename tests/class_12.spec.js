@@ -45,18 +45,18 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
   });
 
   test('When the user clicks the delete button, book should be removed from carousel.', async ({ page }) => {
-    page.on('dialog', dialog => dialog.accept()); // accept prompt pop-up.
+    page.on('dialog', async dialog => {
+      await dialog.accept();
+    }); // accept prompt pop-up.
     await page.goto(REACT_APP_URL);
     await page.waitForLoadState('networkidle');
 
-    let carouselList = await page.locator(`.carousel-item`).all({ timeout: 2000 });
-    const initialLength = carouselList.length;
+    let initialCount = await page.locator(`.carousel-item`).count();
 
-    await page.locator(`.btn-danger`).first().click();
+    await page.locator(`button.btn-danger`).first().click();
 
-    await page.waitForLoadState('networkidle');
-    carouselList = await page.locator(`.carousel-item`).all({ timeout: 2000 });
-    expect(carouselList.length).toEqual(initialLength - 1);
+    let deletedCount = await page.locator(`.carousel-item`).count();
+    expect(deletedCount).toEqual(initialCount - 1);
   });
 
 });
