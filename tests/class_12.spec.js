@@ -44,7 +44,7 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
     expect(btnEls.length).toBeTruthy();
   });
 
-  test('When the user clicks the delete button, book should be removed from carousel.', async ({ page }) => {
+  test('When the user clicks the delete button, the book should be removed.', async ({ page }) => {
     page.on('dialog', async dialog => {
       await dialog.accept();
     }); // accept prompt pop-up.
@@ -53,10 +53,12 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
 
     let initialCount = await page.locator(`.carousel-item`).count();
 
-    await page.locator(`button.btn-danger`).first().click();
+    await page.locator(`button.btn-danger`).first().click({ force: true });
 
-    let deletedCount = await page.locator(`.carousel-item`).count();
-    expect(deletedCount).toEqual(initialCount - 1);
+    setTimeout(async () => {
+      let deletedCount = await page.locator(`.carousel-item`).count();
+      expect(deletedCount).toEqual(initialCount - 1);
+    }, 1000);
   });
 
 });

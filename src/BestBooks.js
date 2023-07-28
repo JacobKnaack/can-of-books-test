@@ -64,9 +64,9 @@ class BestBooks extends React.Component {
 
   deleteBook = async (bookToBeDeleted) => {
     try {
-      // const proceed = window.confirm(`Do you want to delete ${bookToBeDeleted.title}?`)
+      const proceed = window.confirm(`Do you want to delete ${bookToBeDeleted.title}?`)
 
-      // if (proceed) {
+      if (proceed) {
         const config = {
           method: "delete",
           baseURL: process.env.REACT_APP_SERVER_URL,
@@ -77,7 +77,7 @@ class BestBooks extends React.Component {
 
         let newBooks = this.state.books.filter((book) => book._id !== bookToBeDeleted._id);
         this.setState({ books: newBooks });
-      // }
+      }
 
     } catch (error) {
       console.error("Error in BestBooks deleteBook: ", error);
