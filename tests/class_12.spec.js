@@ -54,6 +54,7 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
 
     await page.locator(`.btn-danger`).first().click();
 
+    await page.waitForLoadState('networkidle');
     carouselList = await page.locator(`.carousel-item`).all({ timeout: 2000 });
     expect(carouselList.length).toEqual(initialLength - 1);
   });
