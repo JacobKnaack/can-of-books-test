@@ -14,9 +14,9 @@ test.describe('Create: As a user, I\'d like to add a new book to the shelf, so t
   });
 
   test('When the form is submitted, use Axios to send a POST request to the server\'s /books endpoint, including the data from the form.  The server should respond with the new book that was successfully saved, which you should pass up to the BestBooks component, save to state, to allow React to re-render the list of all books.', async ({ page }) => {
-    let tag = Math.floor(Math.random() * 1000);
-    let title = `Test Title - ${tag}`;
-    let description = `Test Description - ${tag}`;
+    const tag = Math.floor(Math.random() * 1000);
+    const title = `Test Title - ${tag}`;
+    const description = `Test Description - ${tag}`;
 
     await page.goto(REACT_APP_URL);
     await page.locator(`.btn-primary`).click();
@@ -44,20 +44,16 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
     expect(btnEls.length).toBeTruthy();
   });
 
-  test('When the user clicks the delete button, send a DELETE request to /books/:id, replacing :id with the id of that book.', async ({ page }) => {
+  test('When the user clicks the delete button, book should be removed from carousel.', async ({ page }) => {
     page.on('dialog', dialog => dialog.accept()); // accept prompt pop-up.
     await page.goto(REACT_APP_URL);
-    let carousel = page.locator('.carousel');
-    
-    await carousel.waitFor('visible');
-    let carouselList = await page.locator(`.carousel-item`).all();
-    let initialLength = carouselList.length;
-    
-    let btnEls = await page.locator(`.btn-danger`).all();
-    await btnEls[btnEls.length - 1].click();
-    await page.locator(`.carousel-control-next-icon`).click();
+    await page.waitForLoadState('networkidle');
 
-    await carousel.waitFor('visible');
+    let carouselList = await page.locator(`.carousel-item`).all();
+    const initialLength = carouselList.length;
+
+    await page.locator(`.btn-danger`).first().click();
+
     carouselList = await page.locator(`.carousel-item`).all();
     expect(carouselList.length).toEqual(initialLength - 1);
   });
