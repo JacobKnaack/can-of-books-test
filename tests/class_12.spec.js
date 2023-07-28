@@ -53,12 +53,11 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
 
     let initialCount = await page.locator(`.carousel-item`).count();
 
-    await page.locator(`button.btn-danger`).first().click({ force: true });
-
-    setTimeout(async () => {
-      let deletedCount = await page.locator(`.carousel-item`).count();
-      expect(deletedCount).toEqual(initialCount - 1);
-    }, 1000);
+    await page.locator(`.btn-danger`).first().click();
+    
+    await page.waitForTimeout(2000);
+    let deletedCount = await page.locator(`.carousel-item`).count();
+    expect(deletedCount).toEqual(initialCount - 1);
   });
 
 });
