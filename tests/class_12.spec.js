@@ -49,12 +49,12 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
     await page.goto(REACT_APP_URL);
     await page.waitForLoadState('networkidle');
 
-    let carouselList = await page.locator(`.carousel-item`).all();
+    let carouselList = await page.locator(`.carousel-item`).all({ timeout: 2000 });
     const initialLength = carouselList.length;
 
     await page.locator(`.btn-danger`).first().click();
 
-    carouselList = await page.locator(`.carousel-item`).all();
+    carouselList = await page.locator(`.carousel-item`).all({ timeout: 2000 });
     expect(carouselList.length).toEqual(initialLength - 1);
   });
 
