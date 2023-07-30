@@ -125,13 +125,14 @@ class BestBooks extends React.Component {
     this.setState({ books: updatedBooks });
   };
 
-  closeBookFormModal = () => this.setState({ showForm: false });
+  closeBookFormModal = () => this.setState({ showForm: false, bookToBeUpdated: null });
   selectBookToUpdate = (bookToBeUpdated) => this.setState({ bookToBeUpdated, showForm: true });
   closeError = () => this.setState({ errorMessage: "" });
   addABook = () => this.setState({ showForm: true, bookToBeUpdated: null });
 
   render() {
     /* TODO: render all the books in a Carousel */
+    console.log('BEST BOOKS:', this.state);
     return (
       <>
         <h2 className="text-center">

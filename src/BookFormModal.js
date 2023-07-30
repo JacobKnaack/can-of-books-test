@@ -39,6 +39,7 @@ class BookFormModal extends React.Component {
   changeStatus = (event) => this.setState({ status: event.target.value });
 
   render() {
+    console.log(this.state);
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
@@ -75,7 +76,6 @@ class BookFormModal extends React.Component {
                 as="select"
                 onChange={this.changeStatus}
                 defaultValue={this.state.status}
-
               >
                 <option value="LIFE-CHANGING">Life Changing</option>
                 <option value="FAVORITE FIVE">Favorite Five</option>
