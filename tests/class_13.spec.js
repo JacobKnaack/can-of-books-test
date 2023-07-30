@@ -5,6 +5,7 @@ const REACT_APP_URL = process.env.REACT_APP_TEST_URL || 'http://localhost:3000';
 test.describe('Update: As a user, I want to update book details on my list, so that I can change the book status, or update the book details as I learn more about it.', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(REACT_APP_URL);
+    await page.waitForLoadState('networkidle');
 
     let formElements = await page.locator('form').count();
     expect(formElements).toEqual(0);
