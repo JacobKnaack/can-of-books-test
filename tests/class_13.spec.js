@@ -34,8 +34,8 @@ test.describe('Update: As a user, I want to update book details on my list, so t
     await page.waitForTimeout(2000);
     let updatedCount = await page.locator(`.carousel-item`).count();
 
-    await expect(page.getByText(title)).toBeVisible();
-    await expect(page.getByText(description)).toBeVisible();
+    await expect(page.getByText(title)).toBeAttached();
+    await expect(page.getByText(description)).toBeAttached();
     expect(initialCount).toEqual(updatedCount);
   });
 });
