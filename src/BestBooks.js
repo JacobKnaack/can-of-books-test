@@ -50,7 +50,7 @@ class BestBooks extends React.Component {
   createBook = async (newBook) => {
     try {
       const config = {
-        method: "post",
+        method: 'POST',
         baseURL: SERVER_URL,
         url: "/books/",
         // axios sends "data" in the request.body
@@ -80,7 +80,7 @@ class BestBooks extends React.Component {
 
       if (proceed) {
         const config = {
-          method: "delete",
+          method: 'DELETE',
           baseURL: SERVER_URL,
           url: `/books/${bookToBeDeleted._id}`,
         };
@@ -106,7 +106,7 @@ class BestBooks extends React.Component {
   updateBook = async (updatedBook) => {
     console.log('Book to be updated: ', updatedBook);
     const config = {
-      method: 'put',
+      method: 'PUT',
       baseURL: SERVER_URL,
       url: `/books/${updatedBook._id}`,
       data: updatedBook

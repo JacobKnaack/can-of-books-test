@@ -8,7 +8,7 @@ class BookFormModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: this.props.bookToBeUpdated?._id,
+      _id: this.props.bookToBeUpdated?._id,
       title: this.props.bookToBeUpdated?.title,
       description: this.props.bookToBeUpdated?.description,
       status: this.props.bookToBeUpdated?.status,
@@ -20,7 +20,7 @@ class BookFormModal extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const book = {
-      _id: this.state.id,
+      _id: this.state._id,
       title: event.target.title.value,
       description: event.target.description.value,
       status: event.target.status.value,
