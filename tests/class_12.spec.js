@@ -44,7 +44,7 @@ test.describe('Delete: As a user, I want to remove books from my list, so that o
     expect(btnEls.length).toBeTruthy();
   });
 
-  test.skip('When the user clicks the delete button, the book should be removed.', async ({ page }) => {
+  test('When the user clicks the delete button, the book should be removed.', async ({ page }) => {
     page.on('dialog', async dialog => {
       await dialog.accept();
     }); // accept prompt pop-up.
