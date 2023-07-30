@@ -36,6 +36,7 @@ test.describe('Update: As a user, I want to update book details on my list, so t
 
     await expect(page.getByText(title)).toBeAttached();
     await expect(page.getByText(description)).toBeAttached();
+    await page.screenshot({ path: 'screenshot.png' });
     expect(initialCount).toEqual(updatedCount);
   });
 });
