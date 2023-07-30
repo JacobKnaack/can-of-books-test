@@ -5,18 +5,38 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 
 class BookFormModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: this.props.bookToBeUpdated?._id,
+      title: this.props.bookToBeUpdated?.title,
+      description: this.props.bookToBeUpdated?.description,
+      status: this.props.bookToBeUpdated?.status,
+      method: this.props.bookToBeUpdated ? 'put' : 'post',
+      formTitle: this.props.bookToBeUpdated ? 'Update My Favorite Book' : 'Add Book to My Favorites'
+    }
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const newBook = {
+    const book = {
+      _id: this.state.id,
       title: event.target.title.value,
       description: event.target.description.value,
       status: event.target.status.value,
     };
-    console.log("New Book: ", newBook);
-    this.props.createBook(newBook);
+    console.log('Form Book: ', book);
+    if (this.state.method === 'put') {
+      this.props.updateBook(book);
+    } else {
+      this.props.createBook(book);
+    }
     this.props.handleClose();
   };
+
+  changeTitle = (event) => this.setState({ title: event.target.value });
+  changeDescription = (event) => this.setState({ description: event.target.value });
+  changeStatus = (event) => this.setState({ status: event.target.value });
 
   render() {
     return (
@@ -32,6 +52,9 @@ class BookFormModal extends React.Component {
               <Form.Control
                 type="text"
                 placeholder="book title here..."
+                onChange={this.changeTitle}
+                defaultValue={this.state.title}
+                required
               />
             </Form.Group>
 
@@ -40,6 +63,9 @@ class BookFormModal extends React.Component {
               <Form.Control
                 type="text"
                 placeholder="book description here..."
+                onChange={this.changeDescription}
+                defaultValue={this.state.description}
+                required
               />
             </Form.Group>
 
@@ -47,6 +73,9 @@ class BookFormModal extends React.Component {
               <Form.Label>Status</Form.Label>
               <Form.Control
                 as="select"
+                onChange={this.changeStatus}
+                defaultValue={this.state.status}
+
               >
                 <option value="LIFE-CHANGING">Life Changing</option>
                 <option value="FAVORITE FIVE">Favorite Five</option>
@@ -55,7 +84,7 @@ class BookFormModal extends React.Component {
             </Form.Group>
 
             <Button className="mb-4" variant="primary" type="submit">
-              Add New Book!
+              Submit Book!
             </Button>
           </Form>
         </Container>

@@ -4,6 +4,8 @@ import { Carousel, Button, Container, Image } from 'react-bootstrap';
 import ErrorAlert from './ErrorAlert';
 import BookFormModal from './BookFormModal';
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 class BestBooks extends React.Component {
   constructor(props) {
     super(props);
@@ -19,13 +21,16 @@ class BestBooks extends React.Component {
           description: 'test description',
           status: 'life-changing'
         }
-      ]
+      ],
+      errorMessage: '',
+      showForm: false,
+      bookToBeUpdated: null
     }
   }
 
   /* TODO: Make a GET request to your API to fetch all the books from the database  */
   componentDidMount() {
-    fetch(process.env.REACT_APP_SERVER_URL + '/books')
+    fetch(SERVER_URL + '/books')
     .then(res => res.json())
     .then(json => {
       console.log(json);
@@ -38,11 +43,15 @@ class BestBooks extends React.Component {
     });
   }
   
+  /**
+   * Class 12 User story - adds a new book via backend API
+   * @param {Book} newBook 
+   */
   createBook = async (newBook) => {
     try {
       const config = {
         method: "post",
-        baseURL: process.env.REACT_APP_SERVER_URL,
+        baseURL: SERVER_URL,
         url: "/books/",
         // axios sends "data" in the request.body
         data: newBook,
@@ -61,7 +70,10 @@ class BestBooks extends React.Component {
     }
   };
 
-
+  /**
+   * Class 12 User Story - removes a book from state, sends request to backend API.
+   * @param {Book} bookToBeDeleted 
+   */
   deleteBook = async (bookToBeDeleted) => {
     try {
       const proceed = window.confirm(`Do you want to delete ${bookToBeDeleted.title}?`)
@@ -69,7 +81,7 @@ class BestBooks extends React.Component {
       if (proceed) {
         const config = {
           method: "delete",
-          baseURL: process.env.REACT_APP_SERVER_URL,
+          baseURL: SERVER_URL,
           url: `/books/${bookToBeDeleted._id}`,
         };
 
@@ -87,8 +99,36 @@ class BestBooks extends React.Component {
     }
   };
 
+  /**
+   * Class 13 User Story - Updates a book from our list.
+   * @param {Book} updatedBook 
+   */
+  updateBook = async (updatedBook) => {
+    console.log('Book to be updated: ', updatedBook);
+    const config = {
+      method: 'put',
+      baseURL: SERVER_URL,
+      url: `/books/${updatedBook._id}`,
+      data: updatedBook
+    };
+
+    const updatedBookResult = await axios(config);
+
+    const updatedBooks = this.state.books.map(book => {
+      if (book._id === updatedBookResult.data._id) {
+        return updatedBookResult.data;
+      } else {
+        return book;
+      }
+    });
+
+    this.setState({ books: updatedBooks });
+  };
+
   closeBookFormModal = () => this.setState({ showForm: false });
+  selectBookToUpdate = (bookToBeUpdated) => this.setState({ bookToBeUpdated, showForm: true });
   closeError = () => this.setState({ errorMessage: "" });
+  addABook = () => this.setState({ showForm: true, bookToBeUpdated: null });
 
   render() {
     /* TODO: render all the books in a Carousel */
@@ -101,7 +141,7 @@ class BestBooks extends React.Component {
         <Button
           id="addBookButton"
           className="btn-lg"
-          onClick={() => this.setState({ showForm: true })}
+          onClick={this.addABook}
         >
           Add a Book!
         </Button>
@@ -111,6 +151,8 @@ class BestBooks extends React.Component {
             show={this.state.showForm}
             handleClose={this.closeBookFormModal}
             createBook={this.createBook}
+            bookToBeUpdated={this.state.bookToBeUpdated}
+            updateBook={this.updateBook}
           />
         )}
 
@@ -131,6 +173,9 @@ class BestBooks extends React.Component {
                     <p className="carousel-text">Status: {book.status}</p>
                     <Button variant="danger" onClick={() => this.deleteBook(book)}>
                       Delete
+                    </Button>
+                    <Button variant="secondary" onClick={() => this.selectBookToUpdate(book)}>
+                      Update
                     </Button>
                   </Carousel.Caption>
                 </Carousel.Item>
