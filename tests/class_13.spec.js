@@ -21,6 +21,7 @@ test.describe('Update: As a user, I want to update book details on my list, so t
     page.on('dialog', async dialog => {
       await dialog.accept();
     }); // accept prompt pop-up.
+    await page.waitForLoadState('networkidle');
     const tag = Math.floor(Math.random() * 1000);
     let title = `Update Test: New Title - ${tag}`;
     let description = `Update Test: New Description - ${tag}`;
@@ -34,9 +35,8 @@ test.describe('Update: As a user, I want to update book details on my list, so t
     await page.waitForTimeout(2000);
     let updatedCount = await page.locator(`.carousel-item`).count();
 
-    await expect(page.getByText(title)).toBeAttached();
-    await expect(page.getByText(description)).toBeAttached();
-    await page.screenshot({ path: 'screenshot.png' });
+    await expect(page.getByText(title)).toBeVisible();
+    await expect(page.getByText(description)).toBeVisible();
     expect(initialCount).toEqual(updatedCount);
   });
 });
